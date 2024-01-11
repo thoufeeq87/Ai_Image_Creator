@@ -1,6 +1,5 @@
-from openai import OpenAI
-
-client = OpenAI(api_key="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")
+import openai
+openai.api_key="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"
 import replicate
 import streamlit as st
 from pymongo import MongoClient
@@ -24,12 +23,12 @@ File Name: {{prompt_name}}
 
 if st.button("Generate Image"):
     # Generate image prompt using OpenAI API
-    completion_image = client.chat.completions.create(model="gpt-3.5-turbo-1106",
+    completion_image = openai.chat.completions.create(model="gpt-3.5-turbo-1106",
     messages=[{"role": "user", "content": user_prompt_image}])
     image_prompt = completion_image.choices[0].message.content
 
     # Generate file name using OpenAI API
-    completion_file_name = client.chat.completions.create(model="gpt-3.5-turbo-1106",
+    completion_file_name = openai.chat.completions.create(model="gpt-3.5-turbo-1106",
     messages=[{"role": "user", "content": user_prompt_file_name}])
     generated_file_name = completion_file_name.choices[0].message.content.strip()
 
