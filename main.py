@@ -1,4 +1,6 @@
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key="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")
 import replicate
 import streamlit as st
 from pymongo import MongoClient
@@ -8,7 +10,6 @@ from PIL import Image
 st.title("Realistic Image Creator")
 
 text = st.text_input("Enter what image you want to create!", "")
-openai.api_key = "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"
 
 # Generate user prompt for image
 user_prompt_image = f"""Act as a prompt generator for Dall-E. Generate a prompt that will yield the best response from Dall-E 
@@ -23,18 +24,14 @@ File Name: {{prompt_name}}
 
 if st.button("Generate Image"):
     # Generate image prompt using OpenAI API
-    completion_image = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-1106",
-        messages=[{"role": "user", "content": user_prompt_image}],
-    )
-    image_prompt = completion_image['choices'][0]['message']['content']
+    completion_image = client.chat.completions.create(model="gpt-3.5-turbo-1106",
+    messages=[{"role": "user", "content": user_prompt_image}])
+    image_prompt = completion_image.choices[0].message.content
 
     # Generate file name using OpenAI API
-    completion_file_name = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo-1106",
-        messages=[{"role": "user", "content": user_prompt_file_name}],
-    )
-    generated_file_name = completion_file_name['choices'][0]['message']['content'].strip()
+    completion_file_name = client.chat.completions.create(model="gpt-3.5-turbo-1106",
+    messages=[{"role": "user", "content": user_prompt_file_name}])
+    generated_file_name = completion_file_name.choices[0].message.content.strip()
 
     # Generate image using OpenDALL·E
     output = replicate.run(
