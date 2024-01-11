@@ -7,7 +7,7 @@ from pymongo import MongoClient
 from io import BytesIO
 from PIL import Image
 
-openai.api_key = os.environ['OPENAI_API_KEY']
+openai.api_key = os.environ['$OPENAI_API_KEY']
 st.title("Realistic Image Creator")
 
 text = st.text_input("Enter what image you want to create!", "")
