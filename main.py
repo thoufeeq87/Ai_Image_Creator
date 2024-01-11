@@ -1,10 +1,12 @@
+import os
+
 from openai import OpenAI
 import replicate
 import streamlit as st
 from pymongo import MongoClient
 from io import BytesIO
 from PIL import Image
-
+OpenAI.api_key = os.environ['OPENAI_API_KEY']
 st.title("Realistic Image Creator")
 
 text = st.text_input("Enter what image you want to create!", "")
