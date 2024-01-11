@@ -1,5 +1,5 @@
 import openai
-openai.api_key="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"
+openai.api_key="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"
 import replicate
 import streamlit as st
 from pymongo import MongoClient
