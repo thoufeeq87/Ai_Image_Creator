@@ -5,8 +5,10 @@ from pymongo import MongoClient
 from io import BytesIO
 from PIL import Image
 
-# Set Replicate API token
+import os
 
+# Set Replicate API token from environment variable
+replicate_api_token = os.environ.get("REPLICATE_API_TOKEN")
 
 st.title("Realistic Image Creator")
 
