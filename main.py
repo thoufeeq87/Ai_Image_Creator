@@ -5,6 +5,9 @@ from pymongo import MongoClient
 from io import BytesIO
 from PIL import Image
 
+# Set Replicate API token
+replicate.set_api_token("REPLICATE_API_TOKEN=r8_J0bXpHIUzRB5bUjs7kHidrAl60TF3x031W0l5")
+
 st.title("Realistic Image Creator")
 
 # Prompt user for OpenAI API key
