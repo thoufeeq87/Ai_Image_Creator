@@ -82,6 +82,7 @@ if st.button("Generate Image"):
         "file_name": generated_file_name,
         "image": output,
     }
+    st.write(prompt_data)
 
     result = collection.insert_one(prompt_data)
     st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
