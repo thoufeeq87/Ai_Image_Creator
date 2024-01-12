@@ -55,7 +55,7 @@ if st.button("Generate Image"):
             "prompt_strength": 0.8,
             "num_inference_steps": 60
         },
-        token=st.secrets.REPLICATE_API_TOKEN
+        Token=st.secrets.REPLICATE_API_TOKEN
     )
 
     # Save the generated image to MongoDB
