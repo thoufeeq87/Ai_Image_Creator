@@ -26,42 +26,44 @@ user_prompt_file_name = f"""Create a file name for [{text}].
     """
 
 if st.button("Generate Image"):
-    st.write("OpenAI API Key:", st.secrets.okey)
-    st.write("Replicate API Token:", st.secrets.REPLICATE_API_TOKEN)
-    # Initialize OpenAI with the user-provided API key
+    try:
+        st.write("OpenAI API Key:", st.secrets.okey)
+        st.write("Replicate API Token:", st.secrets.REPLICATE_API_TOKEN)
+        # Initialize OpenAI with the user-provided API key
 
 
-    # Generate image prompt using OpenAI API
-    completion_image = openai.chat.completions.create(
-        model="gpt-3.5-turbo-1106",
-        messages=[{"role": "user", "content": user_prompt_image}]
-    )
-    image_prompt = completion_image.choices[0].message.content
+        # Generate image prompt using OpenAI API
+        completion_image = openai.chat.completions.create(
+            model="gpt-3.5-turbo-1106",
+            messages=[{"role": "user", "content": user_prompt_image}]
+        )
+        image_prompt = completion_image.choices[0].message.content
 
-    # Generate file name using OpenAI API
-    completion_file_name = openai.chat.completions.create(
-        model="gpt-3.5-turbo-1106",
-        messages=[{"role": "user", "content": user_prompt_file_name}]
-    )
-    generated_file_name = completion_file_name.choices[0].message.content.strip()
-    os.environ['REPLICATE_API_TOKEN'] = st.secrets.REPLICATE_API_TOKEN
-    # Generate image using OpenDALL·E
-    output = replicate.run(
-        "lucataco/open-dalle-v1.1:1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
-        input={
-            "prompt": image_prompt,
-            "width": 1024,
-            "height": 1024,
-            "scheduler": "KarrasDPM",
-            "num_outputs": 1,
-            "guidance_scale": 7.5,
-            "apply_watermark": True,
-            "negative_prompt": "worst quality, low quality",
-            "prompt_strength": 0.8,
-            "num_inference_steps": 60
-        },
-    )
-
+        # Generate file name using OpenAI API
+        completion_file_name = openai.chat.completions.create(
+            model="gpt-3.5-turbo-1106",
+            messages=[{"role": "user", "content": user_prompt_file_name}]
+        )
+        generated_file_name = completion_file_name.choices[0].message.content.strip()
+        os.environ['REPLICATE_API_TOKEN'] = st.secrets.REPLICATE_API_TOKEN
+        # Generate image using OpenDALL·E
+        output = replicate.run(
+            "lucataco/open-dalle-v1.1:1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
+            input={
+                "prompt": image_prompt,
+                "width": 1024,
+                "height": 1024,
+                "scheduler": "KarrasDPM",
+                "num_outputs": 1,
+                "guidance_scale": 7.5,
+                "apply_watermark": True,
+                "negative_prompt": "worst quality, low quality",
+                "prompt_strength": 0.8,
+                "num_inference_steps": 60
+            },
+        )
+    except Exception as e:
+        st.error(f"An error occurred during API call: {str(e)}")
     # Save the generated image to MongoDB
     client = MongoClient(
         "mongodb+srv://thoufeeq87:Heera@1521@imagecreatercluster.971ye5w.mongodb.net/"
