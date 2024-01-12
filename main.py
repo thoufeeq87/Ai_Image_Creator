@@ -67,26 +67,25 @@ if st.button("Generate Image"):
     st.image(output, caption="Generated Image", use_column_width=True)
 
     # Escape username and password using quote_plus
-    username = quote_plus("thoufeeq87")
-    password = quote_plus("Heera@1521")
+username = quote_plus("thoufeeq87")
+password = quote_plus("Heera@1521")
 
-    # Construct the MongoDB URI
-    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
+# Construct the MongoDB URI
+uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
+# Create MongoClient using the constructed URI
+client = MongoClient(uri)
+db = client["imagescollection"]
+collect = db["collectiontest"]
 
-    # Create MongoClient using the constructed URI
-    client = MongoClient(uri)
-    db = client["imagescollection"]
-    collect = db["collectiontest"]
 
-
-    # Save data to MongoDB
-    prompt_data = {
+# Save data to MongoDB
+prompt_data = {
         #"user_prompt_image": image_prompt,
         "file_name": "text"
         #"image": output,
     }
 
 
-    result = collect.insert_one(prompt_data)
+result = collect.insert_one(prompt_data)
 
-    st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
+st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
