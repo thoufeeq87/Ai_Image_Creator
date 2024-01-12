@@ -39,7 +39,7 @@ if st.button("Generate Image"):
         messages=[{"role": "user", "content": user_prompt_file_name}]
     )
     generated_file_name = completion_file_name.choices[0].message.content.strip()
-
+    os.environ['REPLICATE_API_TOKEN'] = st.secrets.REPLICATE_API_TOKEN
     # Generate image using OpenDALL·E
     output = replicate.run(
         "lucataco/open-dalle-v1.1:1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
@@ -55,7 +55,6 @@ if st.button("Generate Image"):
             "prompt_strength": 0.8,
             "num_inference_steps": 60
         },
-        Token=st.secrets.REPLICATE_API_TOKEN
     )
 
     # Save the generated image to MongoDB
