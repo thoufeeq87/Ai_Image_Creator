@@ -84,7 +84,7 @@ if st.button("Generate Image"):
     image = Image.fromarray(output_array.astype('uint8'))
 
     # Display the generated image
-    st.image(image, caption="Generated Image", use_column_width=True)
+    st.image(output, caption="Generated Image", use_column_width=True)
 
     # Convert PIL Image to BytesIO
     img_bytes_io = BytesIO()
@@ -95,7 +95,7 @@ if st.button("Generate Image"):
     prompt_data = {
         "user_prompt_image": image_prompt,
         "file_name": generated_file_name,
-        "image": img_binary,
+        "image": output,
     }
 
     result = collection.insert_one(prompt_data)
