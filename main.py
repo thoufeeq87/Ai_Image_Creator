@@ -31,14 +31,14 @@ user_prompt_file_name = f"""Create a file name for [{text}].
 
 if st.button("Generate Image"):
     # Generate image prompt using OpenAI API
-    completion_image = openai.chat.completion.create(
+    completion_image = openai.chat.completions.create(
         model="gpt-3.5-turbo-1106",
         messages=[{"role": "user", "content": user_prompt_image}]
     )
     image_prompt = completion_image['choices'][0]['message']['content']
 
     # Generate file name using OpenAI API
-    completion_file_name = openai.chat.completion.create(
+    completion_file_name = openai.chat.completions.create(
         model="gpt-3.5-turbo-1106",
         messages=[{"role": "user", "content": user_prompt_file_name}]
     )
