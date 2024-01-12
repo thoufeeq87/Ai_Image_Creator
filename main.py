@@ -35,14 +35,14 @@ if st.button("Generate Image"):
         model="gpt-3.5-turbo-1106",
         messages=[{"role": "user", "content": user_prompt_image}]
     )
-    image_prompt = completion_image['choices'][0]['message']['content']
+    image_prompt = completion_image.choices[0].message.content
 
     # Generate file name using OpenAI API
     completion_file_name = openai.chat.completions.create(
         model="gpt-3.5-turbo-1106",
         messages=[{"role": "user", "content": user_prompt_file_name}]
     )
-    generated_file_name = completion_file_name['choices'][0]['message']['content'].strip()
+    generated_file_name = completion_file_name.choices[0].message.content.strip()
 
     # Escape username and password using quote_plus
     username = quote_plus("thoufeeq87")
