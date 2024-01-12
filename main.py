@@ -75,18 +75,18 @@ if st.button("Generate Image"):
 
     # Create MongoClient using the constructed URI
     client = MongoClient(uri)
-    db = client["images_collection"]
-    collection = db["collectionJan24"]
+    db = client["imagescollection"]
+    collect = db["collectiontest"]
 
 
     # Save data to MongoDB
     prompt_data = {
         #"user_prompt_image": image_prompt,
-        "file_name": generated_file_name,
+        "file_name": "text"
         #"image": output,
     }
-    st.write(prompt_data)
 
-    result = collection.insert_one(prompt_data)
-    st.write(result)
+
+    result = collect.insert_one(prompt_data)
+
     st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
