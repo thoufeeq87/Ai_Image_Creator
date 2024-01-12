@@ -26,6 +26,8 @@ user_prompt_file_name = f"""Create a file name for [{text}].
     """
 
 if st.button("Generate Image"):
+    st.write("OpenAI API Key:", st.secrets.okey)
+    st.write("Replicate API Token:", st.secrets.REPLICATE_API_TOKEN)
     # Initialize OpenAI with the user-provided API key
 
 
