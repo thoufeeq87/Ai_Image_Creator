@@ -1,11 +1,11 @@
 import os
-
 import openai
 import replicate
 import streamlit as st
 from pymongo import MongoClient
 from io import BytesIO
 from PIL import Image
+from urllib.parse import quote_plus  # Import the quote_plus function
 
 openai.api_key = st.secrets.okey
 
@@ -39,9 +39,21 @@ if st.button("Generate Image"):
         messages=[{"role": "user", "content": user_prompt_file_name}]
     )
     generated_file_name = completion_file_name.choices[0].message.content.strip()
-    #os.environ['REPLICATE_API_TOKEN'] = st.secrets['REPLICATE_API_TOKEN']
+
+    # Escape username and password using quote_plus
+    username = quote_plus("thoufeeq87")
+    password = quote_plus("Heera@1521")
+
+    # Construct the MongoDB URI
+    mongodb_uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/"
+
+    # Create MongoClient using the constructed URI
+    client = MongoClient(mongodb_uri)
+    db = client["images"]
+    collection = db["collectionJan24"]
+
     # Generate image using OpenDALL·E
-    replicates=replicate.Client(api_token=st.secrets.REPLICATE_API_TOKEN)
+    replicates = replicate.Client(api_token=st.secrets.REPLICATE_API_TOKEN)
     output = replicates.run(
         "lucataco/open-dalle-v1.1:1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
         input={
@@ -57,13 +69,6 @@ if st.button("Generate Image"):
             "num_inference_steps": 60
         },
     )
-
-    # Save the generated image to MongoDB
-    client = MongoClient(
-        "mongodb+srv://thoufeeq87:Heera@1521@imagecreatercluster.971ye5w.mongodb.net/"
-    )  # Replace with your connection string
-    db = client["images"]
-    collection = db["collectionJan24"]
 
     # Convert PIL Image to BytesIO
     img_bytes_io = BytesIO()
