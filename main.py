@@ -5,9 +5,14 @@ import streamlit as st
 from pymongo import MongoClient
 from io import BytesIO
 from PIL import Image
-from urllib.parse import quote_plus  # Import the quote_plus function
+import numpy as np
+from urllib.parse import quote_plus
 
+# Set OpenAI API key
 openai.api_key = st.secrets.okey
+
+# Set Replicate API token
+replicate_token = st.secrets.REPLICATE_API_TOKEN
 
 st.title("Realistic Image Creator")
 
@@ -25,27 +30,26 @@ user_prompt_file_name = f"""Create a file name for [{text}].
     """
 
 if st.button("Generate Image"):
-    # Initialize OpenAI with the user-provided API key
     # Generate image prompt using OpenAI API
-    completion_image = openai.chat.completions.create(
+    completion_image = openai.ChatCompletion.create(
         model="gpt-3.5-turbo-1106",
         messages=[{"role": "user", "content": user_prompt_image}]
     )
-    image_prompt = completion_image.choices[0].message.content
+    image_prompt = completion_image['choices'][0]['message']['content']
 
     # Generate file name using OpenAI API
-    completion_file_name = openai.chat.completions.create(
+    completion_file_name = openai.ChatCompletion.create(
         model="gpt-3.5-turbo-1106",
         messages=[{"role": "user", "content": user_prompt_file_name}]
     )
-    generated_file_name = completion_file_name.choices[0].message.content.strip()
+    generated_file_name = completion_file_name['choices'][0]['message']['content'].strip()
 
     # Escape username and password using quote_plus
     username = quote_plus("thoufeeq87")
     password = quote_plus("Heera@1521")
 
     # Construct the MongoDB URI
-    mongodb_uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
+    mongodb_uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/"
 
     # Create MongoClient using the constructed URI
     client = MongoClient(mongodb_uri)
@@ -53,7 +57,7 @@ if st.button("Generate Image"):
     collection = db["collectionJan24"]
 
     # Generate image using OpenDALL·E
-    replicates = replicate.Client(api_token=st.secrets.REPLICATE_API_TOKEN)
+    replicates = replicate.Client(api_token=replicate_token)
     output = replicates.run(
         "lucataco/open-dalle-v1.1:1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
         input={
@@ -70,9 +74,21 @@ if st.button("Generate Image"):
         },
     )
 
+    # Convert the output to a NumPy array
+    output_array = np.array(output)
+
+    # Reshape the array if necessary
+    # output_array = output_array.reshape((height, width, 3))  # Replace height and width with actual dimensions
+
+    # Convert to PIL Image
+    image = Image.fromarray(output_array.astype('uint8'))
+
+    # Display the generated image
+    st.image(image, caption="Generated Image", use_column_width=True)
+
     # Convert PIL Image to BytesIO
     img_bytes_io = BytesIO()
-    Image.fromarray(output).save(img_bytes_io, format="PNG")
+    image.save(img_bytes_io, format="PNG")
     img_binary = img_bytes_io.getvalue()
 
     # Save data to MongoDB
