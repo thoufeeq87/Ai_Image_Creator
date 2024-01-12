@@ -71,7 +71,7 @@ username = quote_plus("thoufeeq87")
 password = quote_plus("Heera@1521")
 
 # Construct the MongoDB URI
-uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
+uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?tls=true&retryWrites=true&w=majority"
 # Create MongoClient using the constructed URI
 client = MongoClient(uri)
 db = client["imagescollection"]
