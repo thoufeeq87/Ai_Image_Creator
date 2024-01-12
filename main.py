@@ -42,17 +42,7 @@ if st.button("Generate Image"):
     )
     generated_file_name = completion_file_name.choices[0].message.content.strip()
 
-    # Escape username and password using quote_plus
-    username = quote_plus("thoufeeq87")
-    password = quote_plus("Heera@1521")
 
-    # Construct the MongoDB URI
-    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
-
-    # Create MongoClient using the constructed URI
-    client = MongoClient(uri)
-    db = client["images_collection"]
-    collection = db["collectionJan24"]
 
     # Generate image using OpenDALL·E
     replicates = replicate.Client(api_token=replicate_token)
@@ -75,6 +65,19 @@ if st.button("Generate Image"):
 
     # Display the generated image
     st.image(output, caption="Generated Image", use_column_width=True)
+
+    # Escape username and password using quote_plus
+    username = quote_plus("thoufeeq87")
+    password = quote_plus("Heera@1521")
+
+    # Construct the MongoDB URI
+    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
+
+    # Create MongoClient using the constructed URI
+    client = MongoClient(uri)
+    db = client["images_collection"]
+    collection = db["collectionJan24"]
+
 
     # Save data to MongoDB
     prompt_data = {
