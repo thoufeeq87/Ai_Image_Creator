@@ -61,6 +61,7 @@ if st.button("Generate Image"):
                 "prompt_strength": 0.8,
                 "num_inference_steps": 60
             },
+            token=st.secrets.REPLICATE_API_TOKEN
         )
     except Exception as e:
         st.error(f"An error occurred during API call: {str(e)}")
