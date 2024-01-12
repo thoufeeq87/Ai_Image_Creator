@@ -74,22 +74,9 @@ if st.button("Generate Image"):
         },
     )
 
-    # Convert the output to a NumPy array
-    output_array = np.array(output)
-
-    # Reshape the array if necessary
-    # output_array = output_array.reshape((height, width, 3))  # Replace height and width with actual dimensions
-
-    # Convert to PIL Image
-    image = Image.fromarray(output_array.astype('uint8'))
 
     # Display the generated image
     st.image(output, caption="Generated Image", use_column_width=True)
-
-    # Convert PIL Image to BytesIO
-    img_bytes_io = BytesIO()
-    image.save(img_bytes_io, format="PNG")
-    img_binary = img_bytes_io.getvalue()
 
     # Save data to MongoDB
     prompt_data = {
