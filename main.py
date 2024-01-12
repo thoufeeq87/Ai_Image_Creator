@@ -78,8 +78,8 @@ if st.button("Generate Image"):
 
     # Save data to MongoDB
     prompt_data = {
-        "user_prompt_image": image_prompt,
-        #"file_name": generated_file_name,
+        #"user_prompt_image": image_prompt,
+        "file_name": generated_file_name,
         #"image": output,
     }
     st.write(prompt_data)
