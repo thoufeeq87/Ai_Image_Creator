@@ -1,11 +1,9 @@
-import os
+
 import openai
 import replicate
 import streamlit as st
 from pymongo import MongoClient
-from io import BytesIO
-from PIL import Image
-import numpy as np
+
 from urllib.parse import quote_plus
 
 # Set OpenAI API key
@@ -49,10 +47,10 @@ if st.button("Generate Image"):
     password = quote_plus("Heera@1521")
 
     # Construct the MongoDB URI
-    mongodb_uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
+    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?retryWrites=true&w=majority"
 
     # Create MongoClient using the constructed URI
-    client = MongoClient(mongodb_uri)
+    client = MongoClient(uri)
     db = client["images"]
     collection = db["collectionJan24"]
 
