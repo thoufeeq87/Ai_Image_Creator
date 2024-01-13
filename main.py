@@ -99,7 +99,7 @@ if st.button("Generate Image"):
             "num_inference_steps": quality[selected_quality]
         },
     )
-
+    st.write(output)
     st.image(output, caption=generated_file_name, use_column_width=True)
 
     def save_image(image, filename=f"{generated_file_name}.png"):
