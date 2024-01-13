@@ -99,17 +99,13 @@ if st.button("Generate Image"):
             "num_inference_steps": quality[selected_quality]
         },
     )
-    print(output[0])
     st.image(output, caption=generated_file_name, use_column_width=True)
-
-    def save_image(image, filename=f"{generated_file_name}.png"):
-        image.save(filename, "PNG")
 
 
     # Download button to save the image
     st.download_button(
         label="Download Image",
-        data=output[0],  # Assuming output[0] is the image data
+        data=output,  # Assuming output[0] is the image data
         file_name=f"{generated_file_name}.png",
         key="download_button",
         help="Click to download the generated image."
