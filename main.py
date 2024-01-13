@@ -65,14 +65,9 @@ if st.button("Generate Image"):
     # Display the generated image
     st.image(output, caption= generated_file_name, use_column_width=True)
 
-    # Escape username and password using quote_plus
-    username = quote_plus("thoufeeq87")
-    password = quote_plus("Heera@1521")
 
     # Construct the MongoDB URI
-    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?tls=true&retryWrites=true&w=majority"
-    # Create MongoClient using the constructed URI
-    client = MongoClient(uri,server_api=ServerApi('1'))
+    client = MongoClient(**st.secrets["mongo"])
     db = client["Ai_Image_Generator"]
     collect = db["ImageJan24"]
 
