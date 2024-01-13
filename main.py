@@ -52,7 +52,7 @@ if selected_platform in size_options:
 
 quality ={"Hq" : 70,
           "Lq" : 25}
-selected_quality = st.checkbox("Select Image Quality:", quality.keys())
+selected_quality = st.checkbox(quality.keys(),"Select Image Quality:")
 
 
 
