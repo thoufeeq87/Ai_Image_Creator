@@ -11,8 +11,9 @@ replicate_token = st.secrets.REPLICATE_API_TOKEN
 st.title("Realistic Image Creator")
 
 text = st.text_input("Enter what image you want to create!", "")
+col1, col2 = st.columns(2)
 platforms = ["Pinterest", "Instagram", "Facebook", "Twitter", "Blog"]
-selected_platform = st.radio("Select a Platform:", platforms)
+selected_platform = col1.radio("Select a Platform:", platforms)
 size_options = {
     "Instagram": {
         "Square": (1080, 1080),
@@ -41,14 +42,13 @@ size_options = {
 }
 
 if selected_platform in size_options:
-    selected_size_key = st.radio("Select Image Size:", size_options[selected_platform].keys())
+    selected_size_key = col2.radio("Select Image Size:", size_options[selected_platform].keys())
     # Retrieve the selected size tuple based on the key
     selected_size = size_options[selected_platform][selected_size_key]
     width, height = selected_size
     width = (width // 8) * 8
     height = (height // 8) * 8
 
-    print(f"Rounded Width: {width}, Rounded Height: {height}")
 # Generate user prompts
 
 # Generate user prompt for image
