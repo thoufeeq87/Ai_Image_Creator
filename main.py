@@ -1,9 +1,8 @@
-
 import openai
 import replicate
 import streamlit as st
 from pymongo import MongoClient
-
+from pymongo.server_api import ServerApi
 from urllib.parse import quote_plus
 
 # Set OpenAI API key
@@ -64,28 +63,28 @@ if st.button("Generate Image"):
 
 
     # Display the generated image
-    st.image(output, caption="Generated Image", use_column_width=True)
+    st.image(output, caption= generated_file_name, use_column_width=True)
 
     # Escape username and password using quote_plus
-username = quote_plus("thoufeeq87")
-password = quote_plus("Heera@1521")
+    username = quote_plus("thoufeeq87")
+    password = quote_plus("Heera@1521")
 
-# Construct the MongoDB URI
-uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?tls=true&retryWrites=true&w=majority"
-# Create MongoClient using the constructed URI
-client = MongoClient(uri)
-db = client["imagescollection"]
-collect = db["collectiontest"]
-
-
-# Save data to MongoDB
-prompt_data = {
-        #"user_prompt_image": image_prompt,
-        "file_name": "text"
-        #"image": output,
-    }
+    # Construct the MongoDB URI
+    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?tls=true&retryWrites=true&w=majority"
+    # Create MongoClient using the constructed URI
+    client = MongoClient(uri,server_api=ServerApi('1'))
+    db = client["Ai_Image_Generator"]
+    collect = db["ImageJan24"]
 
 
-result = collect.insert_one(prompt_data)
+    # Save data to MongoDB
+    prompt_data = {
+            "user_prompt_image": image_prompt,
+            "file_name": generated_file_name,
+            "image": output,
+        }
 
-st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
+
+    result = collect.insert_one(prompt_data)
+
+    st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
