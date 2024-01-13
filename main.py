@@ -70,7 +70,7 @@ if st.button("Generate Image"):
     password = quote_plus("Heera@1521")
 
     # Construct the MongoDB URI
-    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/"
+    uri = f"mongodb+srv://{username}:{password}@imagecreatercluster.971ye5w.mongodb.net/?tls=true&retryWrites=true&w=majority"
     # Create MongoClient using the constructed URI
     client = MongoClient(uri,server_api=ServerApi('1'))
     db = client["Ai_Image_Generator"]
