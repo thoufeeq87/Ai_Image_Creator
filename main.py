@@ -1,7 +1,7 @@
 import openai
 import replicate
 import streamlit as st
-import PIL.Image
+from PIL import Image
 from io import BytesIO
 # Set OpenAI API key
 openai.api_key = st.secrets.okey
@@ -101,16 +101,7 @@ if st.button("Generate Image"):
         },
     )
     st.image(output, caption=generated_file_name, use_column_width=True)
-    print(output)
-    # Convert the PIL Image to bytes
-    image_bytes = BytesIO()
-    output.save(image_bytes, format="PNG")
-    image_data = image_bytes.getvalue()
-    # Download button to save the image
-    st.download_button(
-        label="Download Image",
-        data=image_data,  # Assuming output[0] is the image data
-        file_name=f"{generated_file_name}.png",
-        key="download_button",
-        help="Click to download the generated image."
-    )
+    st.write(output)
+    # pil_image = Image.fromarray(output[0])
+    # pil_image.save(f"{generated_file_name}.png")
+    # st.success(f"Image saved as {generated_file_name}.png")
