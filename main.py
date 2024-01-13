@@ -50,10 +50,10 @@ if selected_platform in size_options:
     height = (height // 8) * 8
 
 
-quality ={"Hq" : 70,
-          "Lq" : 25}
+quality ={"High Quality" : 70,
+          "Standard" : 25}
 selected_quality = st.radio("Select Image Quality:", quality.keys())
-
+st.write(selected_quality.values())
 
 
 # Generate user prompt for image
