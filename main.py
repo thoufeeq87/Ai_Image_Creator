@@ -1,3 +1,5 @@
+import os
+
 import openai
 import replicate
 import requests
@@ -110,6 +112,13 @@ if st.button("Generate Image"):
         # Save the image to a BytesIO object
     image_bytes = BytesIO()
     output_image.save(image_bytes, format='PNG')
+    # Save the image to a specific folder on your computer
+    save_folder = "/Users/mohamedthoufeeq/Desktop/Ai_Image_Creator"
+    save_path = os.path.join(save_folder, f"{generated_file_name}.png")
+
+    with open(save_path, 'wb') as file:
+        file.write(response.content)
+
 
     st.download_button(
             label="Download Image",
@@ -118,3 +127,4 @@ if st.button("Generate Image"):
             key="download_button",
             help="Click to download the generated image."
         )
+
