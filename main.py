@@ -101,7 +101,7 @@ if st.button("Generate Image"):
         },
     )
     st.image(output, caption=generated_file_name, use_column_width=True)
-
+    print(output)
     # Convert the PIL Image to bytes
     image_bytes = BytesIO()
     output.save(image_bytes, format="PNG")
