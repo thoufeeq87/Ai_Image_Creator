@@ -45,6 +45,10 @@ if selected_platform in size_options:
     # Retrieve the selected size tuple based on the key
     selected_size = size_options[selected_platform][selected_size_key]
     width, height = selected_size
+    width = (width // 8) * 8
+    height = (height // 8) * 8
+
+    print(f"Rounded Width: {width}, Rounded Height: {height}")
 # Generate user prompts
 
 # Generate user prompt for image
