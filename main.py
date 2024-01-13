@@ -49,7 +49,12 @@ if selected_platform in size_options:
     width = (width // 8) * 8
     height = (height // 8) * 8
 
-# Generate user prompts
+
+quality ={"Hq" : 70,
+          "Lq" : 25}
+selected_quality = st.checkbox("Select Image Quality:", quality.keys())
+
+
 
 # Generate user prompt for image
 user_prompt_image = f"""Act as a prompt generator for Dall-E. Generate a prompt that will yield the best response from Dall-E 
@@ -87,7 +92,7 @@ if st.button("Generate Image"):
             "height": height,
             "scheduler": "KarrasDPM",
             "num_outputs": 1,
-            "guidance_scale": 7.5,
+            "guidance_scale": 9,
             "apply_watermark": True,
             "negative_prompt": "worst quality, low quality",
             "prompt_strength": 0.8,
