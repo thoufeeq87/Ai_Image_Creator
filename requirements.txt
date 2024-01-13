@@ -4,3 +4,4 @@ replicate
 streamlit
 pillow
 requests
+google

@@ -4,8 +4,7 @@ import requests
 import streamlit as st
 from PIL import Image
 from io import BytesIO
-from google.cloud import storage
-
+import google.cloud.storage as storage
 
 # Set up Google Cloud Storage client
 storage_client = storage.Client.from_service_account_json("/Users/mohamedthoufeeq/Downloads/ai-image-generator-411113-36ad04447fb0.json")
