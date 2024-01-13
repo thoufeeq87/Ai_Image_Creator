@@ -71,7 +71,6 @@ if st.button("Generate Image"):
     db = client["Ai_Image_Generator"]
     collect = db["ImageJan24"]
 
-
     # Save data to MongoDB
     prompt_data = {
             "user_prompt_image": image_prompt,
@@ -80,6 +79,6 @@ if st.button("Generate Image"):
         }
 
 
-    result = collect.insert_one(prompt_data)
+    result = collect.insert_many(prompt_data)
 
     st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
