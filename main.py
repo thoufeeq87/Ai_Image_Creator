@@ -53,7 +53,7 @@ if selected_platform in size_options:
 quality ={"High Quality" : 70,
           "Standard" : 25}
 selected_quality = st.radio("Select Image Quality:", quality.keys())
-st.write(quality[selected_quality])
+
 
 
 # Generate user prompt for image
@@ -96,7 +96,7 @@ if st.button("Generate Image"):
             "apply_watermark": True,
             "negative_prompt": "worst quality, low quality",
             "prompt_strength": 0.8,
-            "num_inference_steps": 60
+            "num_inference_steps": quality[selected_quality]
         },
     )
 
