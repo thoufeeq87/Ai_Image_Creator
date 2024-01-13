@@ -3,4 +3,3 @@ replicate
 streamlit
 pillow
 requests
-google.cloud
