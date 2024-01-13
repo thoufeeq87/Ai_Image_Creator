@@ -108,6 +108,5 @@ if st.button("Generate Image"):
         output_image = Image.open(BytesIO(image_response.content))
         destination = st.file_uploader("Choose where to save the image", type=["png"], key="file_uploader")
         if destination:
-            with open(destination.name, "wb") as f:
-                f.write(output_image.tobytes())
-                st.success(f"Image saved as {destination.name}")
+            output_image.save(destination, format="PNG")
+            st.success(f"Image saved as {destination.name}")
