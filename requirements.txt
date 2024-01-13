@@ -1,6 +1,5 @@
 openai
 replicate
 streamlit
-pymongo
 pillow
 requests

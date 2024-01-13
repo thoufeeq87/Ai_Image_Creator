@@ -1,7 +1,6 @@
 import openai
 import replicate
 import streamlit as st
-import sqlite3
 
 # Set OpenAI API key
 openai.api_key = st.secrets.okey
@@ -9,24 +8,44 @@ openai.api_key = st.secrets.okey
 # Set Replicate API token
 replicate_token = st.secrets.REPLICATE_API_TOKEN
 
-# Connect to SQLite database
-conn = sqlite3.connect('image_generator.db')
-cursor = conn.cursor()
-
-# Create a table if it doesn't exist
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS generated_images (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_prompt_image TEXT,
-        file_name TEXT,
-        image BLOB
-    )
-''')
-conn.commit()
-
 st.title("Realistic Image Creator")
 
 text = st.text_input("Enter what image you want to create!", "")
+platforms = ["Pinterest","Instagram","Facebook","Twitter","Blog"]
+selected_platform = st.checkbox(label="Select Platforms:",key=platforms)
+size_options = {
+    "Instagram": {
+        "Square": (1080, 1080),
+        "Landscape": (1080, 566),
+        "Vertical": (1080, 1350),
+    },
+    "Pinterest": {
+        "Recommended": (1000, 1500),
+        "Size1": (600, 900),
+        "Size2": (1200, 1800),
+    },
+    "Twitter": {
+        "Size1": (1080, 1080),
+        "Size2": (1080, 1350),
+    },
+    "Facebook": {
+        "Square": (2048, 2048),
+        "Portrait": (2048, 3072),
+        "Landscape": (2048, 1149),
+    },
+    "Blog": {
+        "Standard": (1200, 630),
+        "Landscape": (1200, 900),
+        "Portrait": (900, 1200),
+    },
+}
+
+if selected_platform in size_options:
+    selected_size_key = st.radio("Select Image Size:", size_options[selected_platform].keys())
+    # Retrieve the selected size tuple based on the key
+    selected_size = size_options[selected_platform][selected_size_key]
+    width, height = selected_size
+# Generate user prompts
 
 # Generate user prompt for image
 user_prompt_image = f"""Act as a prompt generator for Dall-E. Generate a prompt that will yield the best response from Dall-E 
@@ -60,8 +79,8 @@ if st.button("Generate Image"):
         "lucataco/open-dalle-v1.1:1c7d4c8dec39c7306df7794b28419078cb9d18b9213ab1c21fdc46a1deca0144",
         input={
             "prompt": image_prompt,
-            "width": 1024,
-            "height": 1024,
+            "width": width,
+            "height": height,
             "scheduler": "KarrasDPM",
             "num_outputs": 1,
             "guidance_scale": 7.5,
@@ -72,15 +91,6 @@ if st.button("Generate Image"):
         },
     )
 
-    # Save data to SQLite database
-    cursor.execute('''
-        INSERT INTO generated_images (user_prompt_image, file_name, image)
-        VALUES (?, ?, ?)
-    ''', (image_prompt, generated_file_name, output))
-    conn.commit()
-
     st.image(output, caption=generated_file_name, use_column_width=True)
     st.success("User prompts and generated image saved successfully.")
 
-# Close the database connection
-conn.close()
