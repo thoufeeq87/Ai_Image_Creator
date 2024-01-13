@@ -116,7 +116,7 @@ if st.button("Generate Image"):
     # Save the image to the specified directory
     save_path = "/Users/mohamedthoufeeq/Desktop/Ai_Image_Creator"
     os.makedirs(save_path, exist_ok=True)
-    file_path = f"{save_path}/{generated_file_name}.png"
+    file_path = f"{save_path}/{generated_file_name}.png".strip('"')
     output_image.save(file_path, format='PNG')
 
 
