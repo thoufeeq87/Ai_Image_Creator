@@ -4,10 +4,10 @@ import requests
 import streamlit as st
 from PIL import Image
 from io import BytesIO
-import google.cloud.storage as storage
+import google.cloud
 
 # Set up Google Cloud Storage client
-storage_client = storage.Client.from_service_account_json("/Users/mohamedthoufeeq/Downloads/ai-image-generator-411113-36ad04447fb0.json")
+storage_client = google.cloud.storage.Client.from_service_account_json("/Users/mohamedthoufeeq/Downloads/ai-image-generator-411113-36ad04447fb0.json")
 bucket_name = "my-ai-images"
 bucket = storage_client.get_bucket(bucket_name)
 # Set OpenAI API key
