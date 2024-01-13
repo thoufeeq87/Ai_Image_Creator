@@ -1,15 +1,28 @@
 import openai
 import replicate
 import streamlit as st
-from pymongo import MongoClient
-from pymongo.server_api import ServerApi
-from urllib.parse import quote_plus
+import sqlite3
 
 # Set OpenAI API key
 openai.api_key = st.secrets.okey
 
 # Set Replicate API token
 replicate_token = st.secrets.REPLICATE_API_TOKEN
+
+# Connect to SQLite database
+conn = sqlite3.connect('image_generator.db')
+cursor = conn.cursor()
+
+# Create a table if it doesn't exist
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS generated_images (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_prompt_image TEXT,
+        file_name TEXT,
+        image BLOB
+    )
+''')
+conn.commit()
 
 st.title("Realistic Image Creator")
 
@@ -41,8 +54,6 @@ if st.button("Generate Image"):
     )
     generated_file_name = completion_file_name.choices[0].message.content.strip()
 
-
-
     # Generate image using OpenDALL·E
     replicates = replicate.Client(api_token=replicate_token)
     output = replicates.run(
@@ -61,24 +72,15 @@ if st.button("Generate Image"):
         },
     )
 
+    # Save data to SQLite database
+    cursor.execute('''
+        INSERT INTO generated_images (user_prompt_image, file_name, image)
+        VALUES (?, ?, ?)
+    ''', (image_prompt, generated_file_name, output))
+    conn.commit()
 
-    # Display the generated image
-    st.image(output, caption= generated_file_name, use_column_width=True)
+    st.image(output, caption=generated_file_name, use_column_width=True)
+    st.success("User prompts and generated image saved successfully.")
 
-
-    # Construct the MongoDB URI
-    client = MongoClient(**st.secrets["mongo"])
-    db = client["Ai_Image_Generator"]
-    collect = db["ImageJan24"]
-
-    # Save data to MongoDB
-    prompt_data = {
-            "user_prompt_image": image_prompt,
-            "file_name": generated_file_name,
-            "image": output,
-        }
-
-
-    result = collect.insert_many(prompt_data)
-
-    st.success(f"User prompts and generated image saved with ObjectID: {result.inserted_id}")
+# Close the database connection
+conn.close()
