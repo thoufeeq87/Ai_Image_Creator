@@ -113,13 +113,6 @@ if st.button("Generate Image"):
     image_bytes = BytesIO()
     output_image.save(image_bytes, format='PNG')
 
-    # Save the image to the specified directory
-    save_path = "/Users/mohamedthoufeeq/Desktop/Ai_Image_Creator"
-    os.makedirs(save_path, exist_ok=True)
-    file_path = f"{save_path}/{generated_file_name}.png".strip('"')
-    output_image.save(file_path, format='PNG')
-
-
     st.download_button(
             label="Download Image",
             data=image_bytes.getvalue(),
