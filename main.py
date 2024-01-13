@@ -104,7 +104,7 @@ if st.button("Generate Image"):
 
     # Convert the PIL Image to bytes
     image_bytes = BytesIO()
-    output[0].save(image_bytes, format="PNG")
+    output.save(image_bytes, format="PNG")
     image_data = image_bytes.getvalue()
     # Download button to save the image
     st.download_button(
