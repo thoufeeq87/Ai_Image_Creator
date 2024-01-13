@@ -11,8 +11,8 @@ replicate_token = st.secrets.REPLICATE_API_TOKEN
 st.title("Realistic Image Creator")
 
 text = st.text_input("Enter what image you want to create!", "")
-platforms = ["Pinterest","Instagram","Facebook","Twitter","Blog"]
-selected_platform = st.checkbox(label="Select Platforms:",key=platforms)
+platforms = ["Pinterest", "Instagram", "Facebook", "Twitter", "Blog"]
+selected_platform = st.radio("Select a Platform:", platforms)
 size_options = {
     "Instagram": {
         "Square": (1080, 1080),
