@@ -106,5 +106,8 @@ if st.button("Generate Image"):
     if st.button("Save Image"):
         image_response = requests.get(output[0])
         output_image = Image.open(BytesIO(image_response.content))
-        # Save the image to a file using PIL
-        output_image.save(f"{generated_file_name}.png")
+        destination = st.file_uploader("Choose where to save the image", type=["png"], key="file_uploader")
+        if destination:
+            with open(destination.name, "wb") as f:
+                f.write(output_image.tobytes())
+                st.success(f"Image saved as {destination.name}")
