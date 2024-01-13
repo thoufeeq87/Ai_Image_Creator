@@ -1,7 +1,6 @@
 openai
+google.cloud
 replicate
 streamlit
 pillow
 requests
-google-cloud-storage
-google.cloud
