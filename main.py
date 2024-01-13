@@ -113,10 +113,11 @@ if st.button("Generate Image"):
     image_bytes = BytesIO()
     output_image.save(image_bytes, format='PNG')
     # Save the image to a specific folder on your computer
-    save_folder = "/Users/mohamedthoufeeq/Desktop/Ai_Image_Creator"
-    save_path = os.path.join(save_folder, f"{generated_file_name}.png")
+    save_path = "/Users/mohamedthoufeeq/Desktop/Ai_Image_Creator"
+    file_name = f"{generated_file_name}.png"
+    file_path = os.path.join(save_path, file_name)
 
-    with open(save_path, 'wb') as file:
+    with open(file_path, 'wb') as file:
         file.write(response.content)
 
 
