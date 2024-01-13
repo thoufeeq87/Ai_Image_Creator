@@ -101,7 +101,7 @@ if st.button("Generate Image"):
         },
     )
     st.image(output, caption=generated_file_name, use_column_width=True)
-    st.write(output)
+    st.write(output[1])
     # pil_image = Image.fromarray(output[0])
     # pil_image.save(f"{generated_file_name}.png")
     # st.success(f"Image saved as {generated_file_name}.png")
