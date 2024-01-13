@@ -4,6 +4,13 @@ import requests
 import streamlit as st
 from PIL import Image
 from io import BytesIO
+from google.cloud import storage
+
+
+# Set up Google Cloud Storage client
+storage_client = storage.Client.from_service_account_json("/Users/mohamedthoufeeq/Downloads/ai-image-generator-411113-36ad04447fb0.json")
+bucket_name = "my-ai-images"
+bucket = storage_client.get_bucket(bucket_name)
 # Set OpenAI API key
 openai.api_key = st.secrets.okey
 
@@ -109,6 +116,11 @@ if st.button("Generate Image"):
         # Save the image to a BytesIO object
     image_bytes = BytesIO()
     output_image.save(image_bytes, format='PNG')
+    # Upload the image to Google Cloud Storage
+    blob = bucket.blob(f"images/{generated_file_name}.png")
+    blob.upload_from_string(image_bytes.getvalue(), content_type='image/png')
+
+    st.success(f"Image uploaded to GCS: gs://{bucket_name}/images/{generated_file_name}.png")
 
     st.download_button(
             label="Download Image",
