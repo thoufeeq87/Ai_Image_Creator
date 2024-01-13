@@ -103,11 +103,17 @@ if st.button("Generate Image"):
     )
     st.image(output, caption=generated_file_name, use_column_width=True)
 
-    if st.button("Save Image"):
-        destination = st.file_uploader("Choose where to save the image", type=["png"], key="file_uploader")
-        image_response = requests.get(output[0])
-        output_image = Image.open(BytesIO(image_response.content))
+    response = requests.get(output[0])
 
-        # if destination:
-        #     output_image.save(destination, format="PNG")
-        #     st.success(f"Image saved as {destination.name}")
+    output_image = Image.open(BytesIO(response.content))
+        # Save the image to a BytesIO object
+    image_bytes = BytesIO()
+    output_image.save(image_bytes, format='PNG')
+
+    st.download_button(
+            label="Download Image",
+            data=image_bytes.getvalue(),
+            file_name=f"{generated_file_name}.png",
+            key="download_button",
+            help="Click to download the generated image."
+        )
