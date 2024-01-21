@@ -52,7 +52,7 @@ def open_ai_image_sizes():
 
 def generate_prompt_from_openai(user_prompt):
     completion_prompt = openai.chat.completions.create(
-        model="gpt-4-1106-preview", messages=[{"role": "user", "content": user_prompt}]
+        model="gpt-3.5-turbo-1106", messages=[{"role": "user", "content": user_prompt}]
     )
     result = completion_prompt.choices[0].message.content.strip()
     return result
