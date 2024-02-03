@@ -1,6 +1,6 @@
+boto3
 openai
 Pillow
 replicate
 Requests
 streamlit
-boto3
