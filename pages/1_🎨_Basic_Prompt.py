@@ -1,5 +1,6 @@
 from io import BytesIO
 
+import requests
 import streamlit as st
 from api_helper import (
     image_sizes,
@@ -67,8 +68,8 @@ else:
                     image_prompt, width, height, selected_quality
                 )
                 st.image(image_output, caption=file_name, use_column_width=True)
-                with open(image_output, 'rb') as img_file:
-                    image_bytes = BytesIO(img_file.read())
+                response = requests.get(image_output)
+                image_bytes = BytesIO(response.content)
 
                 # Save prompt and image data to AWS S3 as JSON
                 json_file_url = save_content_aws(text, image_bytes, file_name)
