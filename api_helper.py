@@ -4,8 +4,36 @@ import openai
 import replicate
 import streamlit as st
 from PIL import Image
-from io import BytesIO
 import requests
+import boto3
+import base64
+import json
+from io import BytesIO
+
+
+AWS_ACCESS_KEY_ID = st.secrets.AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY = st.secrets.AWS_SECRET_ACCESS_KEY
+AWS_DEFAULT_REGION = st.secrets.AWS_DEFAULT_REGION
+
+def save_content_aws(prompt_text, image_data, file_name, bucket_name='aiimagebucket'):
+    s3 = boto3.client('s3', AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY ,AWS_DEFAULT_REGION)
+    # Convert image data to Base64
+    base64_image_data = base64.b64encode(image_data.getvalue()).decode('utf-8')
+
+    # Create JSON object
+    data_to_save = {
+        "prompt": prompt_text,
+        "image_data": base64_image_data
+    }
+
+    # Save JSON to S3
+    json_file_key = f'{file_name}.json'
+    s3.put_object(Bucket=bucket_name, Key=json_file_key, Body=json.dumps(data_to_save))
+
+    # Get the URL of the saved JSON file
+    json_file_url = f'https://{bucket_name}.s3.amazonaws.com/{json_file_key}'
+
+    return json_file_url
 
 # Set OpenAI API key
 openai.api_key = st.secrets.okey
