@@ -8,7 +8,7 @@ from api_helper import (
     save_image,
     labeled_text_input,
     display_generated_image_feedback,
-    add_logo,
+    add_logo, save_content_aws,
 )
 from prompts import realistic_textsign_images_prompt, file_name
 
@@ -115,6 +115,13 @@ else:
                 )
                 st.image(image_output, caption=file_name, use_column_width=True)
                 image_bytes = save_image(image_output)
+                image_file_content = image_bytes.getvalue()
+                image_file_key = f"{file_name}.png"
+                save_content_aws(image_file_content, image_file_key, "aiimagebucket")
+                prompt_file_content = image_prompt.encode('utf-8')
+                prompt_file_key = f"{file_name}.txt"
+                save_content_aws(prompt_file_content, prompt_file_key, "aiimagebucket")
+                image_bytes = save_image(image_output)
                 st.download_button(
                     label="Download Image",
                     data=image_bytes.getvalue(),
@@ -143,6 +150,13 @@ else:
                     model, image_prompt, size, quality, style
                 )
                 st.image(image_output, caption=file_name, use_column_width=True)
+                image_bytes = save_image(image_output)
+                image_file_content = image_bytes.getvalue()
+                image_file_key = f"{file_name}.png"
+                save_content_aws(image_file_content, image_file_key, "aiimagebucket")
+                prompt_file_content = image_prompt.encode('utf-8')
+                prompt_file_key = f"{file_name}.txt"
+                save_content_aws(prompt_file_content, prompt_file_key, "aiimagebucket")
                 image_bytes = save_image(image_output)
                 st.download_button(
                     label="Download Image",
