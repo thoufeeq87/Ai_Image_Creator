@@ -1,3 +1,5 @@
+from io import BytesIO
+
 import streamlit as st
 from api_helper import (
     image_sizes,
@@ -8,7 +10,7 @@ from api_helper import (
     save_image,
     labeled_text_input,
     display_generated_image_feedback,
-    add_logo,
+    add_logo, save_content_aws,
 )
 from prompts import basic_prompt, file_name
 
@@ -102,3 +104,11 @@ else:
                     help="Click to download the generated image",
                 )
                 display_generated_image_feedback()
+                image_bytes = BytesIO()
+                image_output.save(image_bytes, format='PNG')
+                image_bytes.seek(0)
+
+                # Save prompt and image data to AWS S3 as JSON
+                json_file_url = save_content_aws(text, image_bytes, file_name)
+
+                st.success(f"Prompt and image data saved to AWS S3 as JSON. [View JSON file]({json_file_url})")
