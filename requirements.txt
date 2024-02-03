@@ -3,3 +3,4 @@ Pillow
 replicate
 Requests
 streamlit
+boto3
