@@ -68,7 +68,7 @@ else:
                     image_prompt, width, height, selected_quality
                 )
                 st.image(image_output, caption=file_name, use_column_width=True)
-                
+
                 image_bytes = save_image(image_output)
                 image_file_content = image_bytes.getvalue()
                 image_file_key = f"{file_name}.png"
