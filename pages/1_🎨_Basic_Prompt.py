@@ -77,7 +77,14 @@ else:
                     help="Click to download the generated image",
                 )
                 display_generated_image_feedback()
+                image_bytes = BytesIO()
+                image_output.save(image_bytes, format='PNG')
+                image_bytes.seek(0)
 
+                # Save prompt and image data to AWS S3 as JSON
+                json_file_url = save_content_aws(text, image_bytes, file_name)
+
+                st.success(f"Prompt and image data saved to AWS S3 as JSON. [View JSON file]({json_file_url})")
 
     else:
         model, size, quality, style = open_ai_image_sizes()
