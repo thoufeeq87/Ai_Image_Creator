@@ -14,7 +14,10 @@ AWS_SECRET_ACCESS_KEY = st.secrets.AWS_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION = st.secrets.AWS_DEFAULT_REGION
 
 def save_content_aws(prompt_text, image_data, file_name, bucket_name='aiimagebucket'):
-    s3 = boto3.client('s3', AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY ,AWS_DEFAULT_REGION)
+    s3 = boto3.client('s3',
+                      aws_access_key_id=AWS_ACCESS_KEY_ID,
+                      aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                      region_name=AWS_DEFAULT_REGION)
     # Convert image data to Base64
     base64_image_data = base64.b64encode(image_data.getvalue()).decode('utf-8')
 
