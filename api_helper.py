@@ -2,15 +2,13 @@ import base64
 import json
 import smtplib
 from email.mime.text import MIMEText
-
-import boto3
 import openai
 import replicate
 import streamlit as st
 from PIL import Image
 from io import BytesIO
 import requests
-
+import boto3
 AWS_ACCESS_KEY_ID = st.secrets.AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY = st.secrets.AWS_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION = st.secrets.AWS_DEFAULT_REGION
