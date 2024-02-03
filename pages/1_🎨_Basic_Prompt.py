@@ -68,13 +68,13 @@ else:
                     image_prompt, width, height, selected_quality
                 )
                 st.image(image_output, caption=file_name, use_column_width=True)
-                response = requests.get(image_output)
-                image_bytes = BytesIO(response.content)
+                
+                image_bytes = save_image(image_output)
+                image_file_content = image_bytes.getvalue()
+                image_file_key = f"{file_name}.png"
+                save_content_aws(image_file_content,image_file_key,"aiimagebucket")
+                st.success(f"Image saved to AWS S3. [View Image]({image_file_key})")
 
-                # Save prompt and image data to AWS S3 as JSON
-                json_file_url = save_content_aws(text, image_bytes, file_name)
-
-                st.success(f"Prompt and image data saved to AWS S3 as JSON. [View JSON file]({json_file_url})")
                 image_bytes = save_image(image_output)
                 st.download_button(
                     label="Download Image",
@@ -100,13 +100,11 @@ else:
                 )
 
                 st.image(image_output, caption=file_name, use_column_width=True)
-                response = requests.get(image_output)
-                image_bytes = BytesIO(response.content)
-
-                # Save prompt and image data to AWS S3 as JSON
-                json_file_url = save_content_aws(text, image_bytes, file_name)
-
-                st.success(f"Prompt and image data saved to AWS S3 as JSON. [View JSON file]({json_file_url})")
+                image_bytes = save_image(image_output)
+                image_file_content = image_bytes.getvalue()
+                image_file_key = f"{file_name}.png"
+                save_content_aws(image_file_content,image_file_key,"aiimagebucket")
+                st.success(f"Image saved to AWS S3. [View Image]({image_file_key})")
 
                 image_bytes = save_image(image_output)
                 st.download_button(
