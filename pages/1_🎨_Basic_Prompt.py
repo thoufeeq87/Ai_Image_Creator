@@ -73,7 +73,9 @@ else:
                 image_file_content = image_bytes.getvalue()
                 image_file_key = f"{file_name}.png"
                 save_content_aws(image_file_content,image_file_key,"aiimagebucket")
-                st.success(f"Image saved to AWS S3. [View Image]({image_file_key})")
+                prompt_file_content = text.encode('utf-8')
+                prompt_file_key = f"{file_name}.txt"
+                save_content_aws(prompt_file_content, prompt_file_key,"aiimagebucket")
 
                 image_bytes = save_image(image_output)
                 st.download_button(
@@ -104,7 +106,10 @@ else:
                 image_file_content = image_bytes.getvalue()
                 image_file_key = f"{file_name}.png"
                 save_content_aws(image_file_content,image_file_key,"aiimagebucket")
-                st.success(f"Image saved to AWS S3. [View Image]({image_file_key})")
+
+                prompt_file_content = text.encode('utf-8')
+                prompt_file_key = f"{file_name}.txt"
+                save_content_aws(prompt_file_content, prompt_file_key,"aiimagebucket")
 
                 image_bytes = save_image(image_output)
                 st.download_button(
